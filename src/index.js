@@ -8,7 +8,7 @@
 var path = require('path');
 var fse = require('fs-extra');
 var logger = require('./helpers/logger')
-var Npm = require('./helpers/npm.js')
+var Npm = require('npm-shell');
 var Options = require('./helpers/options');
 
 var env = { NODE_ENV: 'production' }
@@ -37,10 +37,11 @@ function clientPack(context) {
 
 //清除发布目录
 function cleanPack(context) {
+  var config = require(context.configPath);
   //如果是完全打包，则发布前执行删除发布目录
   if (context.client && context.server) {
     logger.info('Remove dir:' + config.releaseDir);
-    fse.removeSync(config.releaseDir);
+    fse.removeSync(config.releaseDir || context.releaseDir);
   }
   return true;
 }

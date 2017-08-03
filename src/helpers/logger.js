@@ -53,6 +53,7 @@ Logger.prototype.debug = function (message) {
  */
 Logger.prototype.error = function (message) {
   if (this.isLevel('error')) {
+    message = (message && typeof message === 'object') ? message.stack : message;
     message = chalk.bgRed('\nReactNativeOnWeb ' + message);
     return console.error.apply(console, arguments)
   }

@@ -43,6 +43,8 @@
         clientContextEntry: path.resolve('index.web.js'),
         // 服务端代码打包入口文件
         serverContextEntry: '....',
+        // 服务端打包是否复制node_modules到目标目录
+        copyNodeModules:true,
         //额外配置babelrc 例如: (config)=> ... 或者 {persets:[...]}
         babelrc: {
         },

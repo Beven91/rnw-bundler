@@ -62,7 +62,7 @@ module.exports = Options.merge({
     new webpack.NoEmitOnErrorsPlugin(),
     new HappyPack(config.happyPack),
     new RequireImageXAssetPlugin(config.imageAssets),
-    new NodeModulePlugin(contextPath, config.cdnVariableName, config.releaseDir),
+    new NodeModulePlugin(contextPath, config.cdnVariableName, config.releaseDir,config.copyNodeModules),
     new PackageJsonPlugin()
   ],
   externals: function (context, request, callback) {

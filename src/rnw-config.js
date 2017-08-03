@@ -57,6 +57,8 @@ module.exports = {
   projectRoot: projectRoot,
   // 打包发布后的目录
   releaseDir: releaseDir,
+  // 服务端打包是否复制node_modules到目标目录
+  copyNodeModules: customPackager.copyNodeModules || false,
   //目标node_modules目录
   targetNodeModulesDir: targetNodeModulesDir,
   //扩展webpack配置
@@ -74,7 +76,7 @@ module.exports = {
   // 打包复制忽略项
   ignores: ['node_modules/**/*', '.gitignore'].concat(customPackager.ignores),
   //common模块
-  commonChunks:customPackager.commonChunks || [],
+  commonChunks: customPackager.commonChunks || [],
   // 静态资源后缀名
   static: customPackager.static([
     '.bmp', '.ico', '.gif', '.jpg', '.jpeg', '.png', '.psd', '.svg', '.webp', // Image formats

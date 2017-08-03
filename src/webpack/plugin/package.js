@@ -10,7 +10,7 @@ var path = require('path')
 var minimatch = require('minimatch')
 var logger = require('../../helpers/logger');
 var Options = require('../../helpers/options')
-var Npm = require('../../helpers/npm.js')
+var Npm = require('npm-shell')
 
 // 配置文件
 var config = require('../../rnw-config.js')
@@ -75,7 +75,7 @@ ReleasePackageJson.prototype.compile = function () {
       '--out-dir=' + path.join(config.releaseDir, 'server')
     ])
   } catch (ex) {
-    console.error(ex);
+    logger.error(ex)
   } finally {
     logger.info("Compile server complete")
     this.removeBabelRc()
