@@ -8,12 +8,14 @@ var fse = require('fs-extra')
 var logger = require('./logger')
 var Options = require('./options');
 
-var cacheConfiguration  =null;
+var cacheConfiguration = null;
 
 function Configuration() {
   this.print();
   var configPath = process.env['PACK-CONFIG-PATH'] || path.resolve('.packager.js')
+  var releaseDir = process.env['PACK-RELEASE-DIR'];
   var config = this.config = fse.existsSync(configPath) ? require(configPath) : {};
+  config.releaseDir = config.releaseDir || releaseDir;
   logger.info('Config Path:  ' + configPath)
   this.check(config);
   this.mergeStatic(config);
@@ -45,7 +47,7 @@ Configuration.prototype.check = function (config) {
  * 配置配置对象
  */
 Configuration.get = function () {
-  if(!cacheConfiguration){
+  if (!cacheConfiguration) {
     cacheConfiguration = new Configuration();
   }
   return cacheConfiguration.config || {};
@@ -103,7 +105,7 @@ Configuration.prototype.useOf = function (obj, file) {
  */
 Configuration.prototype.emptyOf = function (v, message) {
   var isEmpty = v === null || v === undefined || v.toString().replace(/\s/g, '') === '';
-  this.throws(isEmpty,message);
+  this.throws(isEmpty, message);
 }
 
 /**

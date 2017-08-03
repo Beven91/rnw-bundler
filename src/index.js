@@ -14,7 +14,7 @@ var Options = require('./helpers/options');
 var env = { NODE_ENV: 'production' }
 
 //执行服务端打包
-function serverPack() {
+function serverPack(context) {
   logger.info('Bundle server side .......');
   var sp = (new Npm()).node('node_modules/webpack/bin/webpack.js', [
     '--colors',
@@ -25,7 +25,7 @@ function serverPack() {
 }
 
 //执行客户端端打包
-function clientPack() {
+function clientPack(context) {
   logger.info('Bundle client side .......');
   var sp = (new Npm()).node('node_modules/webpack/bin/webpack.js', [
     '--colors',
@@ -36,9 +36,9 @@ function clientPack() {
 }
 
 //清除发布目录
-function cleanPack(client, server) {
+function cleanPack(context) {
   //如果是完全打包，则发布前执行删除发布目录
-  if (client && server) {
+  if (context.client && context.server) {
     logger.info('Remove dir:' + config.releaseDir);
     fse.removeSync(config.releaseDir);
   }
@@ -46,11 +46,11 @@ function cleanPack(client, server) {
 }
 
 //执行构建流程
-function runAppPack(packs, configPath) {
+function runAppPack(packs, context) {
   var handle = null;
   for (var i = 0, k = packs.length; i < k; i++) {
     handle = packs[i];
-    if (!handle(configPath)) {
+    if (!handle(context)) {
       return logger.error('Bundle error.....');
     }
   }
@@ -63,8 +63,11 @@ function runAppPack(packs, configPath) {
  * @param {String} configPath 自定义配置文件路径 默认会识别process.cwd()/.packager.js
  * @param {Boolean} client 是否打包客户端
  * @param {Boolean} server 是否打包服务端
+ * @param {String} releaseDir 发布目标目录
+ *                （可以从configPath配置文件中指定，或者使用本参数)
+ *                优先级：configPath优先级高于本参数
  */
-function runPack(configPath, client, server) {
+function runPack(configPath, client, server, releaseDir) {
   var handlers = [cleanPack];
   if (client) {
     handlers.push(clientPack);
@@ -74,7 +77,14 @@ function runPack(configPath, client, server) {
   }
   //设置打包配置文件环境变量
   env['PACK-CONFIG-PATH'] = configPath;
-  runAppPack(handlers, configPath);
+  env['PACK-RELEASE-DIR'] = releaseDir;
+  var context = {
+    releaseDir: releaseDir,
+    configPath: configPath,
+    client: client,
+    server: server
+  }
+  runAppPack(handlers, context);
 }
 
 process.on('uncaughtException', function (e) {
