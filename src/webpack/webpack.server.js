@@ -11,7 +11,6 @@ var path = require('path')
 var fs = require('fs')
 var webpack = require('webpack')
 var config = require('../rnw-config.js')
-var gracefulFs = require('graceful-fs')
 var Options = require('../helpers/options.js');
 
 // webpack plugins
@@ -21,8 +20,6 @@ var CleanWebpackPlugin = require('clean-webpack-plugin')
 var HappyPack = require('happypack')
 var ProgressBarPlugin = require('progress-bar-webpack-plugin')
 var PackageJsonPlugin = require('./plugin/package.js')
-
-gracefulFs.gracefulify(fs)
 
 // 代码目录
 var contextPath = path.dirname(config.serverContextEntry)
