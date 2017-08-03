@@ -10,6 +10,7 @@ release/
 .idea/
 out/
 dist/
+test/
 target/
 node_modules/
 bower_modules/

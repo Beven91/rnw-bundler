@@ -8,6 +8,7 @@ release/
 out/
 dist/
 target/
+test/project/release/
 debug.log
 package-lock.json
 logs/
@@ -22,3 +23,4 @@ cli/tmpl/logs
 npm-debug.log
 workspace.xml
 Thumbs.db
+spliter.json

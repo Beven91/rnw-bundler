@@ -8,6 +8,8 @@
 var fse = require('fs-extra')
 var path = require('path')
 var minimatch = require('minimatch')
+var logger = require('../../helpers/logger');
+var Options = require('../../helpers/options')
 var Npm = require('../../helpers/npm.js')
 
 // 配置文件
@@ -37,6 +39,9 @@ ReleasePackageJson.prototype.copyAssets = function () {
       var relName = path.relative(fromDir, src);
       relName = isDir ? relName + '/*' : relName;
       for (var i = 0, k = ignores.length; i < k; i++) {
+        if (src.indexOf(targetDir) > -1) {
+          return false;
+        }
         if (minimatch(relName, ignores[i], { matchBase: true, dot: true, nocase: true })) {
           return false
         }
@@ -61,6 +66,7 @@ ReleasePackageJson.prototype.make = function () {
  */
 ReleasePackageJson.prototype.compile = function () {
   try {
+    logger.info("Compile server.......")
     this.writeBabelRc()
     var r = (new Npm()).exec('babel', [
       path.join(config.projectRoot, 'server'),
@@ -71,6 +77,7 @@ ReleasePackageJson.prototype.compile = function () {
   } catch (ex) {
     console.error(ex);
   } finally {
+    logger.info("Compile server complete")
     this.removeBabelRc()
   }
 }
@@ -106,13 +113,14 @@ ReleasePackageJson.prototype.writeBabelRc = function () {
  * 配置发布后的package.json
  */
 ReleasePackageJson.prototype.configPackage = function () {
+  logger.debug("Config package")
   var releaseDir = config.releaseDir
   var pgk = require(path.resolve('package.json'))
   var pgkfile = path.join(releaseDir, 'package.json')
   var indexWebPackageFile = path.join(path.dirname(config.serverContextEntry), 'package.json');
   var indexWebPackage = fse.existsSync(indexWebPackageFile) ? require(indexWebPackageFile) : {};
   var topLevelDeps = indexWebPackage.dependencies || {};
-  pgk.dependencies = deepAssign(topLevelDeps, pgk.dependencies);
+  pgk.dependencies = Options.assign(topLevelDeps, pgk.dependencies);
   delete pgk.dependencies['react-native'];
   delete pgk.devDependencies
   pgk.scripts = {
@@ -130,18 +138,21 @@ ReleasePackageJson.prototype.configPackage = function () {
  */
 ReleasePackageJson.prototype.configWeb = function () {
   var file = path.resolve('web.json')
-  var outfile = path.join(config.releaseDir, 'web.json')
-  var webConfig = fse.readJsonSync(file)
-  var outputOptions = this.outputOptions
-  var dir = path.dirname(outputOptions.filename)
-  var originIndexWeb = webConfig.indexWeb
-  var targetIndexWeb = path.join(outputOptions.path, dir, path.basename(originIndexWeb))
-  if (config.targetPort) {
-    webConfig.port = config.targetPort;
+  if (fse.existsSync(file)) {
+    logger.debug("Config web")
+    var outfile = path.join(config.releaseDir, 'web.json')
+    var webConfig = fse.readJsonSync(file)
+    var outputOptions = this.outputOptions
+    var dir = path.dirname(outputOptions.filename)
+    var originIndexWeb = webConfig.indexWeb
+    var targetIndexWeb = path.join(outputOptions.path, dir, path.basename(originIndexWeb))
+    if (config.targetPort) {
+      webConfig.port = config.targetPort;
+    }
+    webConfig.indexWeb = path.relative(path.join(config.releaseDir), targetIndexWeb)
+    webConfig.version = new Date().getTime()
+    this.writeJson(outfile, webConfig)
   }
-  webConfig.indexWeb = path.relative(path.join(config.releaseDir), targetIndexWeb)
-  webConfig.version = new Date().getTime()
-  this.writeJson(outfile, webConfig)
 }
 
 /**
@@ -150,12 +161,15 @@ ReleasePackageJson.prototype.configWeb = function () {
 ReleasePackageJson.prototype.configIndex = function () {
   var releaseDir = config.releaseDir
   var file = path.join(releaseDir, 'server/index.js')
-  var outfile = path.join(releaseDir, 'server/index.js')
-  var indexContent = fse.readFileSync(file).toString()
-  var indexRequire = '(' + this.targetRequireAlias.toString() + ')()'
-  indexContent = indexRequire + indexContent
-  this.write(outfile, indexContent)
-  this.configAlias();
+  if (fse.existsSync(file)) {
+    logger.debug("Config alias")
+    var outfile = path.join(releaseDir, 'server/index.js')
+    var indexContent = fse.readFileSync(file).toString()
+    var indexRequire = '(' + this.targetRequireAlias.toString() + ')()'
+    indexContent = indexRequire + indexContent
+    this.write(outfile, indexContent)
+    this.configAlias();
+  }
 }
 
 /**
@@ -224,7 +238,9 @@ PackageJsonPlugin.prototype.apply = function (compiler) {
     maker.make()
   })
   compiler.plugin('emit', function (compilation, callback) {
+    logger.debug("Copy assets......")
     maker.copyAssets()
+    logger.debug("Copy assets complete")
     callback()
   })
 }

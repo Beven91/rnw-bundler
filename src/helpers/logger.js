@@ -10,7 +10,7 @@ var chalk = require('chalk');
  * 日志构造函数
  */
 function Logger() {
-  this.levels = { 'error': true, 'info': true }
+  this.levels = { 'error': true, 'info': true, debug: false }
 }
 
 /**
@@ -31,8 +31,18 @@ Logger.prototype.throwif = function (express, message) {
  */
 Logger.prototype.info = function (message) {
   if (this.isLevel('info')) {
-    message = chalk.green('ReactNativeOnWeb ' + message);
+    message = chalk.green('\nReactNativeOnWeb ' + message);
     return console.info.apply(console, arguments)
+  }
+}
+
+/**
+ * 输出一个调试日志
+ */
+Logger.prototype.debug = function (message) {
+  if (this.isLevel('debug')) {
+    message = chalk.green('\nReactNativeOnWeb ' + message);
+    return console.debug.apply(console, arguments)
   }
 }
 
@@ -43,7 +53,7 @@ Logger.prototype.info = function (message) {
  */
 Logger.prototype.error = function (message) {
   if (this.isLevel('error')) {
-    message = chalk.bgRed('ReactNativeOnWeb ' + message);
+    message = chalk.bgRed('\nReactNativeOnWeb ' + message);
     return console.error.apply(console, arguments)
   }
 }

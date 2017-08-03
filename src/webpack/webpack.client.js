@@ -8,6 +8,7 @@
 module.paths.unshift(require('path').resolve('node_modules'))
 
 var path = require('path')
+var fse  =require('fs-extra');
 var webpack = require('webpack')
 var dantejs = require('dantejs')
 var config = require('../rnw-config.js')
@@ -21,7 +22,6 @@ var HappyPack = require('happypack')
 var RuntimeCapturePlugin = require('./plugin/capture.js');
 var ProgressBarPlugin = require('progress-bar-webpack-plugin')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
 var CodeSpliterPlugin = require('webpack-code-spliter').CodeSpliterPlugin;
 var Split = CodeSpliterPlugin.configure(config.splitRoutes, config.indexWebDir, 'pages', config.splitHandle)
 
@@ -38,7 +38,6 @@ var devPlugins = [
 // 生产环境plugins
 var proPlugins = [
   new CleanWebpackPlugin(assetDir, { root: config.releaseDir }),
-  new CopyWebpackPlugin([{ from: path.resolve('assets'), to: assetDir, toType: 'dir' }]),
   new BundleAnalyzerPlugin({
     analyzerMode: 'static',
     openAnalyzer: false
