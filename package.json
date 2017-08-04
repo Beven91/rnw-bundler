@@ -1,6 +1,6 @@
 {
   "name": "rnw-bundler",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "./src/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "webpack-code-spliter": "^1.0.7",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-hot-middleware": "^2.18.0",
-    "webpack-node-module-plugin": "^1.0.9"
+    "webpack-node-module-plugin": "^1.0.10"
   },
   "devDependencies": {
     "eslint": "^4.0.0",
