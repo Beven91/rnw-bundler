@@ -10,6 +10,7 @@ var fse = require('fs-extra');
 var logger = require('./helpers/logger')
 var Npm = require('npm-shell');
 var Options = require('./helpers/options');
+var Configuration = require('./helpers/configuration')
 
 var env = { NODE_ENV: 'production' }
 
@@ -20,8 +21,8 @@ function serverPack(context) {
     '--colors',
     '--config',
     path.join(__dirname, '/webpack/webpack.server.js')
-  ], env);
-  return sp.status == 0;
+  ], Options.assign(env, process.env));
+  return sp.status === 0;
 }
 
 //执行客户端端打包
@@ -31,8 +32,8 @@ function clientPack(context) {
     '--colors',
     '--config',
     path.join(__dirname, '/webpack/webpack.client.js')
-  ], env);
-  return sp.status == 0;
+  ], Options.assign(env, process.env));
+  return sp.status === 0;
 }
 
 //清除发布目录
@@ -78,8 +79,7 @@ function runPack(configPath, client, server, releaseDir) {
   }
   releaseDir = path.join(releaseDir, 'react-web');
   //设置打包配置文件环境变量
-  env['PACK-CONFIG-PATH'] = configPath;
-  env['PACK-RELEASE-DIR'] = releaseDir;
+  Configuration.session(configPath, releaseDir)
   var context = {
     releaseDir: releaseDir,
     configPath: configPath,

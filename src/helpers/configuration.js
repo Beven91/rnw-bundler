@@ -6,7 +6,6 @@
 var path = require('path')
 var fse = require('fs-extra')
 var logger = require('./logger')
-var Options = require('./options');
 
 var cacheConfiguration = null;
 
@@ -15,9 +14,9 @@ function Configuration() {
   var configPath = process.env['PACK-CONFIG-PATH'] || path.resolve('.packager.js')
   var releaseDir = process.env['PACK-RELEASE-DIR'];
   var config = this.config = fse.existsSync(configPath) ? require(configPath) : {};
-  config.releaseDir = config.releaseDir || releaseDir;
-  logger.info('Config Path:  ' + configPath)
-  this.check(config);
+  config.releaseDir = config.releaseDir || releaseDir || path.resolve('release/react-web');
+  config.projectRoot = config.projectRoot || process.cwd();
+  this.check(config, configPath);
   this.mergeStatic(config);
   this.mergeIgnores(config);
   this.mergeLocalConfig(config);
@@ -36,7 +35,7 @@ Configuration.prototype.print = function () {
 /**
  * 校验必要参数
  */
-Configuration.prototype.check = function (config) {
+Configuration.prototype.check = function (config, configPath) {
   //this.emptyOf(config.releaseDir, '打包目标目录参数(releaseDir) 必须设置')
   //this.emptyOf(config.projectRoot, '工程根目录参数(projectRoot) 必须设置');
   //this.emptyOf(config.serverContextEntry, '服务端entry(serverContextEntry) 必须设置');
@@ -51,6 +50,26 @@ Configuration.get = function () {
     cacheConfiguration = new Configuration();
   }
   return cacheConfiguration.config || {};
+}
+
+/**
+ * 强制刷新配置
+ */
+Configuration.session = function (configPath, releaseDir) {
+  if (configPath) {
+    process.env['PACK-CONFIG-PATH'] = configPath;
+  }
+  if (releaseDir) {
+    process.env['PACK-RELEASE-DIR'] = releaseDir;
+  }
+  configPath = process.env['PACK-CONFIG-PATH'];
+  if (!fse.existsSync(configPath)) {
+    logger.warn('configPath is not exists :' + configPath + ' , use default config')
+  } else {
+    logger.info('Config Path:  ' + process.env['PACK-CONFIG-PATH'])
+  }
+  cacheConfiguration = null;
+  return Configuration.get();
 }
 
 /**
@@ -74,8 +93,8 @@ Configuration.prototype.mergeLocalConfig = function (config) {
  * 静态资源扩展名处理函数
  */
 Configuration.prototype.mergeStatic = function (config) {
-  var static = config.static;
-  config.static = typeof static === 'function' ? static : defaultHandle;
+  var staticHandle = config.static;
+  config.static = typeof staticHandle === 'function' ? staticHandle : defaultHandle;
 }
 
 

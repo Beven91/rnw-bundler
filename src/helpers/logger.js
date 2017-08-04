@@ -59,6 +59,17 @@ Logger.prototype.error = function (message) {
   }
 }
 
+/**
+ * 输出一个error日志
+ *  @param message 消息模板
+ * @param ...params 其他参数
+ */
+Logger.prototype.warn = function (message) {
+  message = (message && typeof message === 'object') ? message.stack : message;
+  message = chalk.yellow('\nReactNativeOnWeb ' + message);
+  return console.error.apply(console, arguments)
+}
+
 
 /**
  * 设置日志等级

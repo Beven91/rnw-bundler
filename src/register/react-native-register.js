@@ -4,7 +4,6 @@
  * 描述：用于实现开发环境将具体的模块使用别名模块进行引用
  */
 var path = require('path')
-var fs = require('fs');
 var imageWeb = require('image-web-loader');
 
 // 原始require
@@ -14,7 +13,7 @@ var ORIGINAL_JS_EXTENSION = require.extensions['.js'];
 var ORIGINAL_JSON_EXTENSION = require.extensions['.json'];
 var ORIGINAL_NODE_EXTENSION = require.extensions['.node'];
 // 配置
-var config = require('../config.js');
+var config = require('../rnw-config.js');
 
 //RequireImageXAssetPlugin 用于支持require('image!x')
 var xAssetsPlugin = new (imageWeb.RequireImageXAssetPlugin)(config.imageAssets);
@@ -32,6 +31,8 @@ require.extensions['.web.js'] =  ORIGINAL_JS_EXTENSION;
 require.extensions['.js'] = ORIGINAL_JS_EXTENSION;
 require.extensions['.json'] = ORIGINAL_JSON_EXTENSION;
 require.extensions['.node'] = ORIGINAL_NODE_EXTENSION;
+
+console.log(config.alias);
 
 /**
  * 重写require  添加别名处理
