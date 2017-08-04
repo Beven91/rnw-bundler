@@ -32,8 +32,6 @@ require.extensions['.js'] = ORIGINAL_JS_EXTENSION;
 require.extensions['.json'] = ORIGINAL_JSON_EXTENSION;
 require.extensions['.node'] = ORIGINAL_NODE_EXTENSION;
 
-console.log(config.alias);
-
 /**
  * 重写require  添加别名处理
  */
