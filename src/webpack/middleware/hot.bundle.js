@@ -1,9 +1,12 @@
-module.exports = function (app) {
+module.exports = function (app, configPath, releaseDir) {
   // 载入依赖>>
+  const path = require('path');
   const webpack = require('webpack')
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
 
+  env['PACK-CONFIG-PATH'] = configPath;
+  env['PACK-RELEASE-DIR'] = releaseDir;
   //客户端热部署...........
 
   // 读取webpack配置文件

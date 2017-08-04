@@ -76,6 +76,7 @@ function runPack(configPath, client, server, releaseDir) {
   if (server) {
     handlers.push(serverPack);
   }
+  releaseDir = path.join(releaseDir, 'react-web');
   //设置打包配置文件环境变量
   env['PACK-CONFIG-PATH'] = configPath;
   env['PACK-RELEASE-DIR'] = releaseDir;
