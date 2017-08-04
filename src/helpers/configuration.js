@@ -37,8 +37,8 @@ Configuration.prototype.print = function () {
  * 校验必要参数
  */
 Configuration.prototype.check = function (config) {
-  this.emptyOf(config.releaseDir, '打包目标目录参数(releaseDir) 必须设置')
-  this.emptyOf(config.projectRoot, '工程根目录参数(projectRoot) 必须设置');
+  //this.emptyOf(config.releaseDir, '打包目标目录参数(releaseDir) 必须设置')
+  //this.emptyOf(config.projectRoot, '工程根目录参数(projectRoot) 必须设置');
   //this.emptyOf(config.serverContextEntry, '服务端entry(serverContextEntry) 必须设置');
   //this.emptyOf(config.clientContextEntry, '客户端打包entry(clientContextEntry) 必须设置');
 }
