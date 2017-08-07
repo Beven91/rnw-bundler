@@ -100,8 +100,8 @@ ReleasePackageJson.prototype.writeBabelRc = function () {
     'plugins': [
       ['module-resolver', {
         'alias': {
-          'react-native-on-web/cli/packager/register': 'react-native-on-web/provider',
-          'react-native-on-web/cli/packager/hot.bundle.js': 'react-native-on-web/provider'
+          'react-native-on-web/packager/register': 'react-native-on-web/provider',
+          'react-native-on-web/packager/hot.bundle.js': 'react-native-on-web/provider'
         }
       }]
     ]
