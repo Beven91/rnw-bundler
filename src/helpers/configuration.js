@@ -56,6 +56,7 @@ Configuration.get = function () {
  * 强制刷新配置
  */
 Configuration.session = function (configPath, releaseDir) {
+  var isEqual = configPath === process.env['PACK-CONFIG-PATH'];
   if (configPath) {
     process.env['PACK-CONFIG-PATH'] = configPath;
   }
@@ -65,7 +66,7 @@ Configuration.session = function (configPath, releaseDir) {
   configPath = process.env['PACK-CONFIG-PATH'];
   if (!fse.existsSync(configPath)) {
     logger.warn('configPath is not exists :' + configPath + ' , use default config')
-  } else {
+  } else if (!isEqual) {
     logger.info('Config Path:  ' + process.env['PACK-CONFIG-PATH'])
   }
   cacheConfiguration = null;
