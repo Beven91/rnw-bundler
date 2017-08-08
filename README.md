@@ -4,7 +4,7 @@
 
 ### 一、简介篇
 
-    react-native-on-web 打包工具
+react-native for web 打包工具，用于分别打包Server Side 以及 Client Side两端代码
 
 
 ### 二、安装篇
