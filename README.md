@@ -4,7 +4,7 @@
 
 ### 一、简介篇
 
-react-native-on-web 打包工具，使用webpack
+react-native-on-web SSR打包工具，使用webpack
 分别打包Server Side 以及 Client Side两端代码。
 
 默认支持如下打包功能:
