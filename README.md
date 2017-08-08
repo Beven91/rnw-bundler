@@ -23,6 +23,10 @@ react-native-on-web 打包工具，使用webpack
 
 - 默认presets react-native
 
+- 服务端无合并打包(即 打包后产出原始目录结构方便线上调试)
+
+- 客户端全局require.error捕获函数(window.onWebpackRequireErrorCapture)
+
 
 ### 二、安装篇
 
