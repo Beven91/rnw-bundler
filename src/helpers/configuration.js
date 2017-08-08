@@ -83,6 +83,10 @@ Configuration.prototype.mergeLocalConfig = function (config) {
     var webpack = path.join(entry, 'webpack.js');
     if (this.useOf(config.babelrc, babelrc)) {
       config.babelrc = fse.readJsonSync(babelrc);
+      var presets = config.babelrc.presets || [];
+      config.babelrc.presets = presets.filter(function (p) {
+        return p !== 'react-native';
+      })
     }
     if (this.useOf(config.webpack, webpack)) {
       config.webpack = require(webpack);
