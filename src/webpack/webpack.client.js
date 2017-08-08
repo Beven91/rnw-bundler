@@ -103,7 +103,8 @@ module.exports = Options.merge({
             loader: 'babel-loader',
             options: {
               presets: config.babelRc.presets,
-              plugins: config.babelRc.plugins
+              plugins: config.babelRc.plugins,
+              babelrc:config.babelRc.babelrc,
             }
           }
         ],

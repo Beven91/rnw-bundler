@@ -104,7 +104,8 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: babelRc.presets,
-          plugins: babelRc.plugins
+          plugins: babelRc.plugins,
+          babelrc:babelRc.babelrc,
         }
       }],
     threadPool: HappyPack.ThreadPool({ size: Math.min(3, os.cpus().length) }),
