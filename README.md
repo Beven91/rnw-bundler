@@ -5,7 +5,8 @@
 ### 一、简介篇
 
 react-native-on-web 打包工具，使用webpack
-分别打包Server Side 以及 Client Side两端代码
+分别打包Server Side 以及 Client Side两端代码。
+
 默认支持如下打包功能:
 
 - SSR(Server Side Render)代码拆分  [ `webpack-code-spliter` ](https://github.com/Beven91/webpack-code-spliter)
