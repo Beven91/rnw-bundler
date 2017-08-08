@@ -11,7 +11,7 @@ react-native-on-web SSR打包工具，使用webpack
 
 - SSR(Server Side Render)代码拆分  [ `webpack-code-spliter` ](https://github.com/Beven91/webpack-code-spliter)
 
-- 图片压缩(PNG,GIF,JPG) [ `image-web-loader` ](https://github.com/Beven91/image-web-loader)
+- 图片压缩(PNG,GIF,JPG)以及高清方案 [ `image-web-loader` ](https://github.com/Beven91/image-web-loader)
 
 - 模块别名
 
