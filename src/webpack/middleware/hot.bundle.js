@@ -23,7 +23,12 @@ module.exports = function (app, configPath, releaseDir) {
 
   //服务端热部署......
   const cache = module.constructor._cache;
+  let replaceModules = {};
   const hotReplaceModule = (m) => {
+    if(replaceModules[m.id]){
+        return;
+    }
+    replaceModules[m.id] = true;
     delete cache[m.id];
     let children = m.children;
     if (children.length > 0) {
@@ -37,6 +42,7 @@ module.exports = function (app, configPath, releaseDir) {
     let mod = moduleCache[id];
     if (mod) {
       console.log('server-side hot replacing .....');
+      replaceModules = {};
       hotReplaceModule(mod);
       console.log('server-side hot replaced !');
     }
