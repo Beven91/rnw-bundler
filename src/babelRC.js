@@ -22,7 +22,9 @@ module.exports = {
     babelrc: false,
     compact: true,
     plugins: [
-      [require.resolve('babel-plugin-transform-react-remove-prop-types'), {
+      [
+        'react-native-web',
+        require.resolve('babel-plugin-transform-react-remove-prop-types'), {
         'mode': 'wrap'
       }]
     ],
