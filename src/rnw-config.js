@@ -103,6 +103,7 @@ module.exports = {
       {
         loader: 'babel-loader',
         options: {
+          cacheDirectory:true,
           presets: babelRc.presets,
           plugins: babelRc.plugins,
           babelrc:babelRc.babelrc,
