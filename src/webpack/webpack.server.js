@@ -106,7 +106,7 @@ module.exports = Options.merge({
     ]
   },
   resolveLoader: {
-    modules: [path.resolve('node_modules'),path.resolve('../node_modules')]
+    modules: [path.resolve('node_modules'), path.resolve('../node_modules'), (process.env['NODE_PATH'] || '')]
   },
   resolve: {
     alias: config.alias,

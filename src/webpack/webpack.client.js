@@ -8,7 +8,7 @@
 module.paths.unshift(require('path').resolve('node_modules'))
 
 var path = require('path')
-var fse  =require('fs-extra');
+var fse = require('fs-extra');
 var webpack = require('webpack')
 var dantejs = require('dantejs')
 var config = require('../rnw-config.js')
@@ -104,7 +104,7 @@ module.exports = Options.merge({
             options: {
               presets: config.babelRc.presets,
               plugins: config.babelRc.plugins,
-              babelrc:config.babelRc.babelrc,
+              babelrc: config.babelRc.babelrc,
             }
           }
         ],
@@ -139,7 +139,7 @@ module.exports = Options.merge({
     ]
   },
   resolveLoader: {
-    modules: [path.resolve('node_modules'), path.resolve('../node_modules')]
+    modules: [path.resolve('node_modules'), path.resolve('../node_modules'), (process.env['NODE_PATH'] || '')]
   },
   resolve: {
     alias: config.alias,
