@@ -8,7 +8,6 @@
 module.paths.unshift(require('path').resolve('node_modules'))
 
 var path = require('path')
-var fse = require('fs-extra');
 var webpack = require('webpack')
 var dantejs = require('dantejs')
 var config = require('../rnw-config.js')
@@ -139,9 +138,17 @@ module.exports = Options.merge({
     ]
   },
   resolveLoader: {
-    modules: [path.resolve('node_modules'), path.resolve('../node_modules'), (process.env['NODE_PATH'] || '')]
+    modules: [
+        path.resolve('node_modules'), 
+        path.resolve('../node_modules'),
+        path.join(__dirname,'../../../')
+      ]
   },
   resolve: {
+    modules: [
+      'node_modules',
+      path.join(__dirname,'../../../'),
+    ],
     alias: config.alias,
     extensions: config.extensions
   }
