@@ -41,12 +41,6 @@ var proPlugins = [
     analyzerMode: 'static',
     openAnalyzer: false
   }),
-  new webpack.DefinePlugin({
-    'process.env': {
-      RNW_RUNTIME:JSON.stringify('Client'),
-      NODE_ENV: JSON.stringify('production')
-    }
-  }),
   new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false
@@ -80,6 +74,12 @@ module.exports = Options.merge({
     new RuntimeCapturePlugin(),
     new CodeSpliterPlugin(isProudction ? config.releaseDir : null),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        RNW_RUNTIME:JSON.stringify('Client'),
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
     new webpack.optimize.CommonsChunkPlugin('common')
   ].concat(isProudction ? proPlugins : devPlugins),
   module: {
