@@ -43,6 +43,7 @@ var proPlugins = [
   }),
   new webpack.DefinePlugin({
     'process.env': {
+      RNW_RUNTIME:JSON.stringify('Client'),
       NODE_ENV: JSON.stringify('production')
     }
   }),
