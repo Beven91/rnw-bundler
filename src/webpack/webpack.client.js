@@ -76,8 +76,8 @@ module.exports = Options.merge({
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        RNW_RUNTIME:JSON.stringify('Client'),
-        NODE_ENV: JSON.stringify('production')
+        RNW_RUNTIME: JSON.stringify('Client'),
+        NODE_ENV: JSON.stringify(isProudction ? 'production' : 'development')
       }
     }),
     new webpack.optimize.CommonsChunkPlugin('common')
@@ -140,15 +140,15 @@ module.exports = Options.merge({
   },
   resolveLoader: {
     modules: [
-        path.resolve('node_modules'), 
-        path.resolve('../node_modules'),
-        path.join(__dirname,'../../../')
-      ]
+      path.resolve('node_modules'),
+      path.resolve('../node_modules'),
+      path.join(__dirname, '../../../')
+    ]
   },
   resolve: {
     modules: [
       'node_modules',
-      path.join(__dirname,'../../../'),
+      path.join(__dirname, '../../../'),
     ],
     alias: config.alias,
     extensions: config.extensions
