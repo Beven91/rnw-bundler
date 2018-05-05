@@ -2,6 +2,8 @@
 
 [![NPM version][npm-image]][npm-url]
 
+当前不维护了，已迁移到 [`react-native-on-web-bundler`](https://github.com/Beven91/react-native-on-web/tree/master/packages/react-native-on-web-bundler)
+
 ### 一、简介篇
 
 react-native-on-web SSR打包工具，使用webpack
